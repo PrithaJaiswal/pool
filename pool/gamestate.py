@@ -211,12 +211,12 @@ class GameState:
 
     def check_potted(self):
         self.can_move_white_ball = False  # if white ball is potted, it will be created again and placed in the middle
-        if 0 in self.potted:
+        if config.WHITE_BALL_NUMBER in self.potted:
             self.create_white_ball()
             self.cue.target_ball = self.white_ball
             self.potted.remove(0)
             self.turn_over(True)
-        if 8 in self.potted:
+        if config.EIGHT_BALL_NUMBER in self.potted:
             if self.potting_8ball[self.current_player]:
                 self.game_over(self.current_player == Player.Player1)
             else:
@@ -227,7 +227,7 @@ class GameState:
         stripes_remaining = False
         solids_remaining = False
         for remaining_ball in self.balls:
-            if remaining_ball.number != 0 and remaining_ball.number != 8:
+            if remaining_ball.number != config.WHITE_BALL_NUMBER and remaining_ball.number != config.EIGHT_BALL_NUMBER:
                 stripes_remaining = stripes_remaining or remaining_ball.ball_type == BallType.Striped
                 solids_remaining = solids_remaining or not remaining_ball.ball_type == BallType.Striped
         ball_type_remaining = {BallType.Solid: solids_remaining, BallType.Striped: stripes_remaining}
@@ -263,8 +263,8 @@ class GameState:
             # and the player potted the balls exclusively of one color (excluting white balls)
             # then it is decided based on which players turn it is right now and which type
             # of balls he potted
-            potted_stripe_count = len([x for x in self.potted if x > 8])
-            potted_solid_count = len([x for x in self.potted if x < 8])
+            potted_stripe_count = len([x for x in self.potted if x > config.EIGHT_BALL_NUMBER])
+            potted_solid_count = len([x for x in self.potted if x < config.EIGHT_BALL_NUMBER])
             only_stripes_potted = potted_solid_count == 0 and potted_stripe_count > 0
             only_solids_potted = potted_stripe_count == 0 and potted_solid_count > 0
 
